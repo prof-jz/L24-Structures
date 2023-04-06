@@ -21,107 +21,97 @@ struct DBRecord  //JZ - defines a new data structure called DBRecord.
   int employeeN; //JZ - employee number record within every DBRecord instance
 }
 
-DBRecord fileRead(string fileName, int numRec);
+DBRecord fileRead(string fName, int rec);
+void listPrint(string fileN, int rec, DBRecord DBOut);
+void fileWrite(string fileN, int rec, DBRecord DBOut);
+string cName(string question);
+  
 
-
-int main() {
- 
-  string fileName = "employeeData"; // JZ - sets the name of the file to open
+int main() 
+{
+  string fileName;
   DBRecord myDB;
   int Records = 3;
+
+  fileName = cName("Enter the filename"); // JZ - sets the name of the file to open
+  if (fileName == "")
+    fileName = "employeeData.txt";
   
-  myDB = fileRead(fileName); //JZ - uses fileRead to read the file and return the DB to main()
+  myDB = fileRead(fileName, Records); //JZ - uses fileRead to read the file and return the DB to main()
   
   return 0;
 }
 
-void nameSort(string fileName)
+
+
+DBRecord fileRead(string fileN, int rec)
 {
   bool done = false;            // JZ - variable to determine when sort is done
   int x = 0, y = 0;             // JZ - counter variables
-  DBRecord empRecords[3]; // JZ - string array
+  DBRecord empRecords[rec];       // JZ - creates database empRecords with rec elements
 
   
-  ifstream myfile;
-  myfile.open(fileName);
+  ifstream myFile;    //JZ - associates file input stream with myFile
+  myFile.open(fileN);
 
   /*JZ - Next we test to see if the file is open,
    * if so we reading each element of the file into a
    *   string array variable,
    * we then close the file
    */
-  if (myfile.is_open()) {
-    while (myfile.good()) // JZ - iterates until program encounters the EOF (end
+  if (myFile.is_open()) 
+  {
+    while (myFile.good()) // JZ - iterates until program encounters the EOF (end
                        // of file) character
     {
-      myfile >> animalNames[x]; // JZ - pipes stream from the urrent location in
-                                // 'myfile' into the current 'animalNames'
-                                // pidgeonhole until it encounters a ' ' or '\n'
+      
+      /* JZ - pipes stream from the current location in'myfile' into the current 
+        empRecord element*/ 
+      myFile >> empRecords[x].fName;
+      myFile >> empRecords[x].lName;
+      myFile >> empRecords[x].employeeN;   
       x++;
     }
   }
-   myfile.close();
+  myFile.close();
   
-  while (done == false) {
-    done = true;
-
-    cout << "\n\nThe list after " << y << " sort iterations is: \n";
-    y++;
-
-    // JZ - outputs the list in each iteration
-    for (x = 0; x < sizeof(animalNames) / sizeof(string); x++) {
-      if ((x) % 5 == 0) // JZ - note use of '%' modulo
-      {
-        cout << endl; // JZ - adds a carriage return between every 5 elements so
-                      // the list displays neatly.
-      }
-      cout << animalNames[x] << " ";
-    }
-
-    /*
-     * JZ - sorting on the 'sizeof' the string array results       * in sorting
-     * each letter.
-     */
-
-    for (x = 1; x < sizeof(animalNames) / sizeof(string); x++) {
-      if (animalNames[x - 1] > animalNames[x]) {
-        done = false;
-        temp = animalNames[x];
-        animalNames[x] = animalNames[x - 1];
-        animalNames[x - 1] = temp;
-      }
-    }
-  }
-
- ofstream sortListF;
-    sortListF.open("animalSort.txt");
-   for (x = 0; x < sizeof(animalNames)/sizeof(string); x++)
-     {
-       sortListF << animalNames[x];
-       if ( x < sizeof(animalNames)/sizeof(string) - 1)
-       sortListF <<  "\n";
-     }
-   sortListF.close();
-  
-  
-  cout << "\n\nThe list is sorted!\n";
-
+  return empRecords[rec];
 }
 
-string cName()
+
+
+void fileWrite(string fileN, int rec, DBRecord DBOut[rec])
+{
+  int x = 0;
+  ofstream saveF;
+    saveF.open(fileN);
+   for (x = 0; x < rec; x++)
+     {
+       saveF << "First Name " << x+1 << DBOut[x].fName;
+       saveF << "Last Name " << x+1 << DBOut[x].lName;
+       saveF << "Employee Number " << x+1 << DBOut[x].employeeN; 
+       if (x < rec - 1)
+         cout << "\n";  
+     }
+   saveF.close();
+}
+
+string cName(string question)
 {
   string fileName;
   bool done = false;
 
-  cout << "WHat filename";
+  cout << question;
   while (!done)
     {
       done = true;
-  getline(cin, fileName);
-  for (int x = 0; x < sizeof(fileName); x++)
-    if (fileName[x] == ' ')
-      cout << "invalid name";
-      done = false;
+      getline(cin, fileName);
+      for (int x = 0; x < sizeof(fileName); x++)
+          if (fileName[x] == ' ')
+          {
+            cout << "invalid name";
+            done = false;
+          }
     }
   return fileName;
 }

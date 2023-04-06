@@ -3,7 +3,7 @@
  * Lesson 17 sample code: Structures and Sorting
  * By:            Prof J Zehnpfennig, PE
  * Created:       02 March 2023
- * Last Updated:  07 March 2023
+ * Last Updated:  28 March 2023
  **********************************************/
 
 #include <fstream>  //JZ - used to work with files
@@ -16,13 +16,58 @@ using namespace std;
 void nameSort(string fileName);
 
 int main() {
-  bool done = false;            // JZ - variable to determine when sort is done
-  int x = 0, y = 0;             // JZ - counter variables
-  string animalNames[18], temp; // JZ - string array
+ 
   string fileName = "animals.txt"; // JZ - sets the name of the file to open
 
   nameSort(fileName);
+
   /*
+   * JZ - Add your Project Code below:
+   *  1. Move the file read out of main() and into a function
+   *    a. Pass the file name to the function
+   *    b. Open, read, and sort the file as demonstrated
+   *    c. Close "animals.txt"
+   *  2. Write the sorted list to a file called animalSort.txt
+   *    a. In the sorting fuction,
+   *      i.   open a the "animalSort.txt" file
+   *      ii.  write sorted variable contents to the file
+   *      iii. ensure each name appears on its own line
+   *      iv.  close "animalSort.txt"
+   *    b. return to main();
+   *  3. Add features to main()
+   *    a. create a menu with the following options:
+   *      i.   Sort default animals.txt
+   *      ii.  Sort custom named file & save to custom filenam
+   *      iii. Print contents animals.txt
+   *      iv.  Print contents of animalSort.txt
+   *      v.   Print contents of custom named file
+   *      vi.  Exit program
+   *  4. Create new function calls
+   *      i.  string customName() that returns a string into
+   *      a string variable called 'cName'
+   *      ii. void listPrint(string cName)
+   *      ii. have all function calls pass custom names
+   *  5.  Create two additional functions:
+   *     a. string customName() {}
+   *        i.  Asks user to input the filename
+   *        ii. Validates input to ensure there are no spaces
+   *        iii.Returns valid filename to main() string 'cName'
+   *     b. void listPrint(string fileName)
+   *        i.  Prints contents of 'fileName'
+   *          Note: 'fileName' is cName from main()
+   *        ii. Separates list by rows of 5 names
+   */
+
+  return 0;
+}
+
+void nameSort(string fileName)
+{
+  bool done = false;            // JZ - variable to determine when sort is done
+  int x = 0, y = 0;             // JZ - counter variables
+  string animalNames[18], temp; // JZ - string array
+
+    /*
    *JZ - 'ifstream' tells the compiler that we are
    * going to have an input file stream.
    * We call the input stream 'myfile'.
@@ -80,58 +125,35 @@ int main() {
     }
   }
 
-ofstream sortListF;
-   sortListF.open("animalSort.txt");
-  for (x = 0; x < sizeof(animalNames)/sizeof(string); x++)
-    sortListF << animalNames[x] << "\n";
-  sortListF.close();
+ ofstream sortListF;
+    sortListF.open("animalSort.txt");
+   for (x = 0; x < sizeof(animalNames)/sizeof(string); x++)
+     {
+       sortListF << animalNames[x];
+       if ( x < sizeof(animalNames)/sizeof(string) - 1)
+       sortListF <<  "\n";
+     }
+   sortListF.close();
   
   
   cout << "\n\nThe list is sorted!\n";
 
-  /*
-   * JZ - Add your Project Code below:
-   *  1. Move the file read out of main() and into a function
-   *    a. Pass the file name to the function
-   *    b. Open, read, and sort the file as demonstrated
-   *    c. Close "animals.txt"
-   *  2. Write the sorted list to a file called animalSort.txt
-   *    a. In the sorting fuction,
-   *      i.   open a the "animalSort.txt" file
-   *      ii.  write sorted variable contents to the file
-   *      iii. ensure each name appears on its own line
-   *      iv.  close "animalSort.txt"
-   *    b. return to main();
-   *  3. Add features to main()
-   *    a. create a menu with the following options:
-   *      i.   Sort default animals.txt
-   *      ii.  Sort custom named file & save to custom filenam
-   *      iii. Print contents animals.txt
-   *      iv.  Print contents of animalSort.txt
-   *      v.   Print contents of custom named file
-   *      vi.  Exit program
-   *  4. Create new function calls
-   *      i.  string customName() that returns a string into
-   *      a string variable called 'cName'
-   *      ii. void listPrint(string cName)
-   *      ii. have all function calls pass custom names
-   *  5.  Create two additional functions:
-   *     a. string customName() {}
-   *        i.  Asks user to input the filename
-   *        ii. Validates input to ensure there are no spaces
-   *        iii.Returns valid filename to main() string 'cName'
-   *     b. void listPrint(string fileName)
-   *        i.  Prints contents of 'fileName'
-   *          Note: 'fileName' is cName from main()
-   *        ii. Separates list by rows of 5 names
-   */
-
-  return 0;
 }
 
-
-void nameSort(string fileName)
+string cName()
 {
-  
-}
+  string fileName;
+  bool done = false;
 
+  cout << "WHat filename";
+  while (!done)
+    {
+      done = true;
+  getline(cin, fileName);
+  for (int x = 0; x < sizeof(fileName); x++)
+    if (fileName[x] == ' ')
+      cout << "invalid name";
+      done = false;
+    }
+  return fileName;
+}

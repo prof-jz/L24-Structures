@@ -2,7 +2,7 @@
  * Alabama A&M University - EE109 - Spring 2023
  * Lesson 24 sample code: Structures 
  * By:            Prof J Zehnpfennig, PE
- * Created:       02 March 2023
+ * Created:       06 March 2023
  * Last Updated:  06 April 2023
  **********************************************/
 
@@ -19,18 +19,18 @@ struct DBRecord  //JZ - defines a new data structure called DBRecord.
   string fName;  //JZ - first name record within every DBRecord instance
   string lName;  //JZ - last name record within every DBRecord instance
   int employeeN; //JZ - employee number record within every DBRecord instance
-}
+};
 
 DBRecord fileRead(string fName, int rec);
-void listPrint(string fileN, int rec, DBRecord DBOut);
-void fileWrite(string fileN, int rec, DBRecord DBOut);
+void listPrint(string fileN, int rec, DBRecord**);
+void fileWrite(string fileN, int rec, DBRecord**);
 string cName(string question);
   
 
 int main() 
 {
   string fileName;
-  DBRecord myDB;
+  DBRecord** myDB;
   int Records = 3;
 
   fileName = cName("Enter the filename to read data from: "); // JZ - sets the name of the file to open
@@ -42,17 +42,17 @@ int main()
   fileName = cName("\nEnter the filename to write data to:"); // JZ - sets the name of the file to open
   if (fileName == "")
     fileName = "employeeInfo.txt";
-  fileWrite(fileName, rec, myDB)
+  fileWrite(fileName, Records, myDB);
   return 0;
 }
 
 
 
-DBRecord fileRead(string fileN, int rec)
+DBRecord** fileRead(string fileN, int rec)
 {
   bool done = false;            // JZ - variable to determine when sort is done
   int x = 0, y = 0;             // JZ - counter variables
-  DBRecord empRecords[rec];       // JZ - creates database empRecords with rec elements
+  DBRecord** empRecords = new DBRecord[rec];       // JZ - creates database empRecords with rec elements
 
   
   ifstream myFile;    //JZ - associates file input stream with myFile
@@ -79,7 +79,7 @@ DBRecord fileRead(string fileN, int rec)
 
 
 
-void fileWrite(string fileN, int rec, DBRecord DBOut[rec])
+void fileWrite(string fileN, int rec, DBRecord** DBOut)
 {
   int x = 0;
   ofstream saveF;
